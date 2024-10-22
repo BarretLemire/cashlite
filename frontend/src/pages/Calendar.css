@@ -1,0 +1,141 @@
+/* Full-page layout: Ensure the calendar fills the whole page */
+.calendar-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh; /* Full viewport height */
+    width: 100vw; /* Full viewport width */
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Styling for the Calendar */
+.react-calendar {
+    width: 80%; /* Adjust to fit most of the page width */
+    max-width: 1000px; /* Limit max size on large screens */
+    margin: 0 auto; /* Center the calendar horizontally */
+    border: none; /* Remove default border */
+}
+
+.react-calendar__navigation {
+    display: flex;
+    justify-content: space-between; /* Spread out the navigation */
+    align-items: center;
+    font-size: 1.2em;
+    padding: 10px;
+    background-color: #fff;
+}
+
+.react-calendar__navigation button {
+    color: #333;
+    font-size: 18px;
+    font-weight: bold;
+    background: none;
+    border: none;
+}
+
+.react-calendar__navigation button:disabled {
+    color: #ccc;
+}
+
+/* Weekdays (Mo, Tu, We, etc.) */
+.react-calendar__month-view__weekdays__weekday {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 35px;
+    height: 35px;
+    background-color: #e0e0e0;
+    border-radius: 10px;
+    color: #333;
+    font-weight: bold;
+    margin: 0 auto;
+}
+
+.react-calendar__month-view__weekdays {
+    font-weight: bold;
+    color: #555;
+    text-align: center;
+}
+
+/* Regular Calendar Day Tiles */
+.react-calendar__tile {
+    height: 50px;
+    background: #fff;
+    color: #333;
+    border-radius: 10px;
+    margin: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+/* Hover effect for regular days */
+.react-calendar__tile:enabled:hover {
+    background-color: #f0f0f0;
+}
+
+/* Current Day Indicator (today) */
+.react-calendar__tile--now {
+    background-color: #333;
+    color: white;
+    width: 50px;
+    height: 50px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Current Day Indicator Hover */
+.react-calendar__tile--now:hover {
+    background-color: #444;
+    color: white;
+}
+
+/* Active Day (Selected Day) */
+.react-calendar__tile--active {
+    background-color: #000;
+    color: white;
+    width: 50px;
+    height: 50px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Event Day Styling - Same as Current Day Indicator */
+.react-calendar__tile.event-day {
+    background-color: #ffd700; /* Yellow highlight for event days */
+    color: white;
+    width: 50px; /* Match width and height of current day */
+    height: 50px;
+    border-radius: 10px; /* Rounded square shape */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Event Details */
+.event-details {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 16px;
+    color: #333;
+}
+
+.event-details h3 {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.event-details p {
+    font-size: 16px;
+    color: #555;
+}

@@ -1,0 +1,137 @@
+/* Home.css */
+
+/* Full-page layout: sidebar + main content */
+.home-container {
+    display: flex;
+    height: 100vh; /* Full viewport height */
+    width: 100vw;  /* Full viewport width */
+  }
+  
+  .sidebar {
+    width: 200px;
+    background-color: #333;
+    color: white;
+    padding: 20px;
+  }
+
+  .sidebar nav ul li {
+    margin-bottom: 20px;
+  }
+  
+  .sidebar nav ul li a {
+    color: white; /* Ensure sidebar links are white */
+    text-decoration: none; /* Remove underline */
+  }
+  
+  .sidebar nav ul li a:hover {
+    text-decoration: underline; /* Add underline on hover for better UX */
+    color: #ccc; /* Optional: lighter color on hover */
+  }
+  
+  .content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .income-section,
+  .expense-section {
+    position: relative; /* Parent container for positioning icons */
+    padding: 20px;
+    background-color: #f4f4f4;
+    border-radius: 10px;
+    margin: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    flex: 1; /* Make sections fill height evenly */
+  }
+  
+  .income-section h2,
+  .expense-section h2 {
+    color: #333;
+  }
+  
+  /* Pen icon in top-right */
+  .edit-icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+  }
+  
+  /* Save icon in bottom-right */
+  .save-icon {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+  }
+  
+  /* Delete icon */
+  .delete-icon {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    margin-left: 10px;
+  }
+  
+  /* Income and expense items */
+  .income-item,
+  .expense-item {
+    color: #333;
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+  }
+  
+  input[type="number"] {
+    width: 100px;
+    margin-right: 10px;
+    padding: 5px;
+    background-color: #333;
+    color: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  /* Total field */
+  .total-field {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    display: flex;
+    align-items: center;
+  }
+  
+  /* Total field label */
+  .total-field label {
+    margin-right: 10px;
+    color: #333;
+  }
+  
+  /* Add income/expense button */
+  .add-category-btn {
+    display: flex;
+    align-items: center;
+    background-color: #333;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .add-category-btn:hover {
+    background-color: #45a049;
+  }
+  
+  .add-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+  }
+  
