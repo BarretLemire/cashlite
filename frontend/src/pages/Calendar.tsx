@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from 'react-router-dom'; // Import useNavigate for navigation
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import addIcon from "../assets/add.svg";
@@ -14,6 +15,7 @@ const CalendarPage: React.FC = () => {
 
   // State to handle selected expense from localStorage
   const [selectedExpense, setSelectedExpense] = useState<any>(null);
+  const navigate = useNavigate(); // Hook for navigation
 
   useEffect(() => {
     // Retrieve the selected expense from localStorage
@@ -69,6 +71,16 @@ const CalendarPage: React.FC = () => {
 
   return (
     <div className="calendar-container">
+      {/* Dashboard Button (Top Left Corner) */}
+      <button className="nav-btn dashboard-btn" onClick={() => navigate('/')}>
+        Go to Dashboard
+      </button>
+
+      {/* Upcoming Button (Top Right Corner) */}
+      <button className="nav-btn upcoming-btn" onClick={() => navigate('/upcoming')}>
+        Go to Upcoming
+      </button>
+
       <Calendar
         onClickDay={handleDateClick}
         value={selectedDate}

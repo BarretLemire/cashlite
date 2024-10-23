@@ -17,7 +17,7 @@ const SignInModal: React.FC<{ closeModal: () => void }> = ({ closeModal }) => {
             <input type="checkbox" /> Remember me
           </label>
           
-          <button type="submit" className="modal-btn">Sign In</button>
+          <button type="submit" className="modal-btn">Log In</button>
           <a href="#" className="forgot-password">Forgot password?</a>
         </form>
         <button onClick={closeModal} className="close-modal">X</button>

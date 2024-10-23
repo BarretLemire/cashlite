@@ -9,6 +9,9 @@
     color: #333;                   /* Dark text color */
     width: 100%;                   /* Full width of the viewport */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add slight shadow */
+    box-sizing: border-box;
+    overflow: hidden;
+    margin: 0 auto;
 }
 
 /* Left section with profile and log out button */
@@ -30,7 +33,7 @@
 .header-right {
     display: flex;                 /* Ensure Log In and Register buttons are inline */
     align-items: center;
-    padding-right: 45px;           /* Vertically align the buttons */
+    padding-right: 10px;           /* Vertically align the buttons */
 }
 
 /* Icon styling */
