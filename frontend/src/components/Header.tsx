@@ -15,6 +15,8 @@ const Header: React.FC<{ isLoggedIn: boolean, handleLogout: () => void, openSign
   return (
     <header className="app-header">
       <div className="header-left">
+        <span className='app-header-logo'>Cashlite</span>
+
         {isLoggedIn && (
           <>
             <img src={profileIcon} alt="Profile" className="header-icon" />

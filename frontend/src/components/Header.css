@@ -20,6 +20,20 @@
     align-items: center;           /* Vertically align the icon and text */
 }
 
+/* Cashlite Logo styling */
+.app-header-logo {
+    font-family: 'Inter', sans-serif;
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin-right: 20px;
+
+    border: 2px solid #333;
+    padding: 5px 15px;
+    border-radius: 10px;
+    box-sizing: border-box;
+}
+
 /* Center section with month and calendar icon */
 .header-center {
     display: flex;                 /* Flexbox layout for the calendar and date */
@@ -48,7 +62,7 @@
     background-color: #444;        /* Dark background for the buttons */
     color: white;                  /* White text */
     border: none;                  /* Remove border */
-    padding: 5px 15px;             /* Padding around the buttons */
+    padding: 10px 15px;             /* Padding around the buttons */
     border-radius: 5px;            /* Rounded corners */
     cursor: pointer;               /* Pointer cursor on hover */
     font-size: 14px;               /* Standard font size */

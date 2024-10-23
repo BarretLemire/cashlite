@@ -166,3 +166,53 @@
     font-size: 16px;
     color: #555;
 }
+
+/* Event item container */
+.event-item {
+    display: flex;
+    align-items: center; /* Vertically align the icon and label */
+    margin: 10px 0;
+}
+
+/* Shrink the delete icon */
+.event-delete-icon {
+    width: 16px; /* Smaller size */
+    height: 16px; /* Same as width */
+    margin-right: 8px; /* Space between icon and label */
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+}
+
+/* Optional hover effect for delete icon */
+.event-delete-icon:hover {
+    transform: scale(1.1); /* Slight enlargement on hover */
+}
+
+/* Event label (text) styling */
+.event-item span {
+    font-size: 16px; /* Keep label size consistent */
+    color: #333;
+}
+
+/* Add event button */
+.add-event-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #333;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 20px;
+}
+
+/* Adjust the add icon position */
+.add-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px; /* Space between the icon and the text */
+    margin-top: 2px;    /* Slight shift down */
+}
