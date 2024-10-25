@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
+import { DarkModeContext } from '../context/DarkModeContext';
 import './Home.css'; 
 
 import penIcon from '../assets/pen.svg';
@@ -7,6 +8,7 @@ import saveIcon from '../assets/save.svg';
 import addIcon from '../assets/add.svg';
 
 const HomePage = () => {
+    const { darkMode, toggleDarkMode } = useContext(DarkModeContext); // Get dark mode state
     const [isEditMode, setEditMode] = useState(false);
     const [incomeItems, setIncomeItems] = useState([
       { id: 1, amount: 750, category: "Disability" },
@@ -17,21 +19,16 @@ const HomePage = () => {
       { id: 2, amount: 118, category: "Phone" },
     ]);
 
-    // Calculate total income
     const totalIncome = incomeItems.reduce((total, item) => total + item.amount, 0);
-
-    // Calculate total expenses
     const totalExpenses = expenseItems.reduce((total, item) => total + item.amount, 0);
 
-    // Toggle between edit and normal mode
     const toggleEditMode = () => {
       setEditMode(!isEditMode);
     };
 
-    // Exit edit mode by setting isEditMode to false
     const handleSave = () => {
       console.log('Save changes');
-      setEditMode(false); // Exit edit mode
+      setEditMode(false);
     };
 
     const handleDeleteItem = (id: number, type: 'income' | 'expense') => {
@@ -43,7 +40,7 @@ const HomePage = () => {
     };
 
     const handleInputChange = (id: number, value: number, type: 'income' | 'expense') => {
-      if (isNaN(value)) return; // Prevent NaN from breaking the app
+      if (isNaN(value)) return;
       if (type === 'income') {
         setIncomeItems(incomeItems.map(item => (item.id === id ? { ...item, amount: value } : item)));
       } else {
@@ -52,13 +49,19 @@ const HomePage = () => {
     };
 
     return (
-      <div className="home-container">
+      <div className={`home-container ${darkMode ? 'dark-mode' : ''}`}>
         <aside className="sidebar">
           <nav>
             <ul>
               <li><a href="/">Dashboard</a></li>
               <li><a href="/upcoming">Remaining/Upcoming</a></li>
               <li><a href="/calendar">Calendar</a></li>
+              {/* Dark Mode Toggle Button */}
+            <li>
+              <a href="#" onClick={toggleDarkMode}>
+                {darkMode ? 'Light Mode' : 'Dark Mode'}
+              </a>
+            </li>
             </ul>
           </nav>
         </aside>
@@ -75,8 +78,8 @@ const HomePage = () => {
                   type="number"
                   value={item.amount}
                   onChange={(e) => handleInputChange(item.id, parseFloat(e.target.value), 'income')}
-                  readOnly={!isEditMode} // Editable only in edit mode
-                  min="0" // Prevent negative values
+                  readOnly={!isEditMode}
+                  min="0"
                 />
                 <span>{item.category}</span>
                 {isEditMode && (
@@ -90,7 +93,6 @@ const HomePage = () => {
               </div>
             ))}
 
-            {/* Total Income Field */}
             <div className="total-field">
               <label>Total Income</label>
               <input type="number" value={totalIncome} readOnly />
@@ -112,8 +114,8 @@ const HomePage = () => {
                   type="number"
                   value={item.amount}
                   onChange={(e) => handleInputChange(item.id, parseFloat(e.target.value), 'expense')}
-                  readOnly={!isEditMode} // Editable only in edit mode
-                  min="0" // Prevent negative values
+                  readOnly={!isEditMode}
+                  min="0"
                 />
                 <span>{item.category}</span>
                 {isEditMode && (
@@ -127,7 +129,6 @@ const HomePage = () => {
               </div>
             ))}
 
-            {/* Total Expense Field */}
             <div className="total-field">
               <label>Total Expenses</label>
               <input type="number" value={totalExpenses} readOnly />

@@ -1,16 +1,19 @@
+
+
 /* Full-page layout: Ensure the calendar fills the whole page */
 .calendar-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100vh; /* Full viewport height */
-    width: 100vw; /* Full viewport width */
+    height: 100vh;
+    width: 100vw;
     background-color: #f9f9f9;
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    position: relative; /* To position navigation buttons */
+    position: relative;
+    overflow: hidden;
 }
 
 /* Navigation Buttons */
@@ -22,34 +25,34 @@
     border-radius: 5px;
     cursor: pointer;
     position: absolute;
-    z-index: 10; /* Ensure buttons stay on top of calendar */
+    z-index: 10;
 }
 
 .dashboard-btn {
     top: 10px;
-    left: 10px; /* Position top left */
+    left: 10px;
 }
 
 .upcoming-btn {
     top: 10px;
-    right: 10px; /* Position top right */
+    right: 10px;
 }
 
 .nav-btn:hover {
-    background-color: #555; /* Darker hover effect */
+    background-color: #555;
 }
 
 /* Styling for the Calendar */
 .react-calendar {
-    width: 80%; /* Adjust to fit most of the page width */
-    max-width: 1000px; /* Limit max size on large screens */
-    margin: 0 auto; /* Center the calendar horizontally */
-    border: none; /* Remove default border */
+    width: 80%;
+    max-width: 1000px;
+    margin: 0 auto;
+    border: none;
 }
 
 .react-calendar__navigation {
     display: flex;
-    justify-content: space-between; /* Spread out the navigation */
+    justify-content: space-between;
     align-items: center;
     font-size: 1.2em;
     padding: 10px;
@@ -62,6 +65,14 @@
     font-weight: bold;
     background: none;
     border: none;
+}
+
+/* Dark Mode Navigation Buttons */
+.calendar-container.dark-mode .react-calendar__navigation button {
+    background-color: #555;
+    color: white;
+    border-radius: 5px;
+    padding: 5px 10px;
 }
 
 .react-calendar__navigation button:disabled {
@@ -102,9 +113,20 @@
     transition: background-color 0.3s;
 }
 
+/* Dark Mode Calendar Day Tiles */
+.calendar-container.dark-mode .react-calendar__tile {
+    background: #555;
+    color: white;
+}
+
 /* Hover effect for regular days */
 .react-calendar__tile:enabled:hover {
     background-color: #f0f0f0;
+}
+
+/* Dark Mode Hover effect for regular days */
+.calendar-container.dark-mode .react-calendar__tile:enabled:hover {
+    background-color: #666;
 }
 
 /* Current Day Indicator (today) */
@@ -125,6 +147,12 @@
     color: white;
 }
 
+/* Dark Mode Current Day Indicator */
+.calendar-container.dark-mode .react-calendar__tile--now {
+    background-color: #fff;
+    color: #333;
+}
+
 /* Active Day (Selected Day) */
 .react-calendar__tile--active {
     background-color: #000;
@@ -137,16 +165,22 @@
     align-items: center;
 }
 
-/* Event Day Styling - Same as Current Day Indicator */
+/* Event Day Styling */
 .react-calendar__tile.event-day {
-    background-color: #ffd700; /* Yellow highlight for event days */
+    background-color: #ffd700;
     color: white;
-    width: 50px; /* Match width and height of current day */
+    width: 50px;
     height: 50px;
-    border-radius: 10px; /* Rounded square shape */
+    border-radius: 10px;
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+/* Dark Mode Event Day */
+.calendar-container.dark-mode .react-calendar__tile.event-day {
+    background-color: #ff9900;
+    color: white;
 }
 
 /* Event Details */
@@ -154,44 +188,46 @@
     margin-top: 20px;
     text-align: center;
     font-size: 16px;
+    padding: 10px;
     color: #333;
+    box-sizing: border-box;
 }
 
-.event-details h3 {
-    font-size: 20px;
-    margin-bottom: 10px;
-}
-
-.event-details p {
-    font-size: 16px;
-    color: #555;
+/* Dark Mode Event Details */
+.calendar-container.dark-mode .event-details {
+    color: white;
 }
 
 /* Event item container */
 .event-item {
     display: flex;
-    align-items: center; /* Vertically align the icon and label */
+    align-items: center;
     margin: 10px 0;
 }
 
 /* Shrink the delete icon */
 .event-delete-icon {
-    width: 16px; /* Smaller size */
-    height: 16px; /* Same as width */
-    margin-right: 8px; /* Space between icon and label */
+    width: 16px;
+    height: 16px;
+    margin-right: 8px;
     cursor: pointer;
     transition: transform 0.2s ease-in-out;
 }
 
-/* Optional hover effect for delete icon */
-.event-delete-icon:hover {
-    transform: scale(1.1); /* Slight enlargement on hover */
+/* Dark Mode: Make event delete icon white */
+.calendar-container.dark-mode .event-delete-icon {
+    filter: invert(100%);
 }
 
 /* Event label (text) styling */
 .event-item span {
-    font-size: 16px; /* Keep label size consistent */
+    font-size: 16px;
     color: #333;
+}
+
+/* Dark Mode Event label styling */
+.calendar-container.dark-mode .event-item span {
+    color: white;
 }
 
 /* Add event button */
@@ -209,10 +245,57 @@
     margin-top: 20px;
 }
 
-/* Adjust the add icon position */
-.add-icon {
-    width: 20px;
-    height: 20px;
-    margin-right: 10px; /* Space between the icon and the text */
-    margin-top: 2px;    /* Slight shift down */
+/* Dark Mode Add Event Button */
+.calendar-container.dark-mode .add-event-btn {
+    background-color: white;
+    color: #333;
+}
+
+/* Dark Mode: Make the add icon color match the label */
+.calendar-container.dark-mode .add-event-btn .add-icon {
+    filter: invert(100%);
+}
+
+/* Dark Mode Styles */
+.calendar-container.dark-mode {
+    background-color: #333;
+    color: white;
+}
+
+/* Navigation Buttons */
+.nav-btn {
+    background-color: #333;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    position: absolute;
+}
+
+.nav-btn:hover {
+    background-color: #555;
+}
+
+/* Dark Mode Navigation Buttons */
+.calendar-container.dark-mode .nav-btn {
+    background-color: white;
+    color: #333;
+}
+
+/* Dark Mode Toggle Button */
+.dark-mode-toggle {
+    background-color: #333;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+.calendar-container.dark-mode .dark-mode-toggle {
+    background-color: white;
+    color: #333;
 }

@@ -83,4 +83,42 @@
     margin-top: 5px;
   }
   
-  
+  /* Dark Mode for Modal Overlay */
+.modal-overlay.dark-mode {
+  background-color: rgba(255, 255, 255, 0.7);
+}
+
+/* Dark Mode Modal Content */
+.modal-overlay.dark-mode .modal-content {
+  background-color: #333;
+  color: white;
+}
+
+/* Dark Mode Close Button */
+.modal-overlay.dark-mode .close-modal {
+  color: white;
+}
+
+/* Dark Mode Form */
+.modal-overlay.dark-mode form label {
+  color: white;
+}
+
+/* Dark Mode Input Fields */
+.modal-overlay.dark-mode form input {
+  background-color: #444;
+  color: white;
+  border: 1px solid #888;
+}
+
+/* Dark Mode Button */
+.modal-overlay.dark-mode .modal-btn {
+  background-color: white;
+  color: #333;
+}
+
+/* Dark Mode Forgot Password Link */
+.modal-overlay.dark-mode .forgot-password {
+  color: white;
+}
+

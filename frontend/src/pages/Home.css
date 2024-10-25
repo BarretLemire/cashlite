@@ -3,8 +3,8 @@
 /* Full-page layout: sidebar + main content */
 .home-container {
     display: flex;
-    height: 100vh; /* Full viewport height */
-    width: 100vw;  /* Full viewport width */
+    height: 100vh;
+    width: 100vw;
   }
   
   .sidebar {
@@ -13,19 +13,19 @@
     color: white;
     padding: 20px;
   }
-
+  
   .sidebar nav ul li {
     margin-bottom: 20px;
   }
   
   .sidebar nav ul li a {
-    color: white; /* Ensure sidebar links are white */
-    text-decoration: none; /* Remove underline */
+    color: white;
+    text-decoration: none;
   }
   
   .sidebar nav ul li a:hover {
-    text-decoration: underline; /* Add underline on hover for better UX */
-    color: #ccc; /* Optional: lighter color on hover */
+    text-decoration: underline;
+    color: #ccc;
   }
   
   .content {
@@ -36,13 +36,13 @@
   
   .income-section,
   .expense-section {
-    position: relative; /* Parent container for positioning icons */
+    position: relative;
     padding: 20px;
     background-color: #f4f4f4;
     border-radius: 10px;
     margin: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    flex: 1; /* Make sections fill height evenly */
+    flex: 1;
   }
   
   .income-section h2,
@@ -106,7 +106,6 @@
     align-items: center;
   }
   
-  /* Total field label */
   .total-field label {
     margin-right: 10px;
     color: #333;
@@ -133,5 +132,60 @@
     width: 20px;
     height: 20px;
     margin-right: 10px;
+  }
+  
+  /* Dark Mode Specific Styles */
+  .home-container.dark-mode .sidebar {
+    background-color: white;
+    color: #333;
+  }
+  
+  .home-container.dark-mode .sidebar nav ul li a {
+    color: #333;
+  }
+  
+  .home-container.dark-mode .income-section,
+  .home-container.dark-mode .expense-section {
+    background-color: #333;
+    color: white;
+    box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
+  }
+  
+  .home-container.dark-mode .income-section h2,
+  .home-container.dark-mode .expense-section h2 {
+    color: white;
+  }
+  
+  /* Dark Mode: Make edit and save icons white */
+  .home-container.dark-mode .edit-icon,
+  .home-container.dark-mode .save-icon {
+    filter: invert(100%); /* Invert color to make them white in dark mode */
+  }
+  
+  /* Dark Mode: Make income and expense labels white */
+  .home-container.dark-mode .income-item,
+  .home-container.dark-mode .expense-item {
+    color: white; /* Set text color to white in dark mode */
+  }
+  
+  /* Total field dark mode */
+  .home-container.dark-mode .total-field label {
+    color: white;
+  }
+  
+  .add-category-btn {
+    display: flex;
+    align-items: center;
+    background-color: #333;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .add-category-btn:hover {
+    background-color: #455;
   }
   

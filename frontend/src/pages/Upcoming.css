@@ -1,25 +1,25 @@
 /* Full-page layout: sidebar + main content */
 .upcoming-container {
     display: flex;
-    height: 100vh; /* Full viewport height */
-    width: 100vw;  /* Full viewport width */
-  }
-  
-  .sidebar {
+    height: 100vh;
+    width: 100vw;
+}
+
+.sidebar {
     width: 200px;
     background-color: #333;
     color: white;
     padding: 20px;
-  }
-  
-  .content {
+}
+
+.content {
     flex: 1;
     display: flex;
     flex-direction: column;
-  }
-  
-  /* Unified upcoming section */
-  .upcoming-section {
+}
+
+/* Unified upcoming section */
+.upcoming-section {
     position: relative;
     padding: 20px;
     background-color: #f4f4f4;
@@ -27,55 +27,55 @@
     margin: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     flex: 1;
-  }
-  
-  .upcoming-section h2 {
+}
+
+.upcoming-section h2 {
     color: #333;
     margin-bottom: 10px;
-  }
-  
-  /* Edit and Save icons */
-  .edit-icon {
+}
+
+/* Edit and Save icons */
+.edit-icon {
     position: absolute;
     top: 10px;
     right: 10px;
     width: 30px;
     height: 30px;
     cursor: pointer;
-  }
-  
-  .save-icon {
+}
+
+.save-icon {
     position: absolute;
     bottom: 10px;
     right: 10px;
     width: 30px;
     height: 30px;
     cursor: pointer;
-  }
-  
-  /* Remaining total */
-  .remaining-total {
-    margin-bottom: 20px; /* Add space between the total and expenses */
-  }
-  
-  .remaining-total input {
+}
+
+/* Remaining total */
+.remaining-total {
+    margin-bottom: 20px;
+}
+
+.remaining-total input {
     width: 150px;
     padding: 5px;
     background-color: #333;
     color: white;
     border: 1px solid #ccc;
     border-radius: 5px;
-  }
-  
-  /* Irregular expenses section */
-  .expense-item {
+}
+
+/* Irregular expenses section */
+.expense-item {
     color: #333;
     display: flex;
     align-items: center;
     margin: 10px 0;
-  }
-  
-  .expense-item input {
+}
+
+.expense-item input {
     width: 100px;
     padding: 5px;
     background-color: #333;
@@ -83,40 +83,40 @@
     border: 1px solid #ccc;
     border-radius: 5px;
     margin-right: 10px;
-  }
-  
-  .expense-item span {
-    margin-right: 10px;
-  }
-  
-  .allocate-btn {
-    background-color: #333;
-    color: white;
-    padding: 5px 10px;
-    margin-right: 10px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .assign-btn {
-    background-color: #333;
-    color: white;
-    padding: 5px 10px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
+}
 
-  .delete-icon {
+.expense-item span {
+    margin-right: 10px;
+}
+
+.allocate-btn {
+    background-color: #333;
+    color: white;
+    padding: 5px 10px;
+    margin-right: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.assign-btn {
+    background-color: #333;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.delete-icon {
     width: 30px;
     height: 30px;
     cursor: pointer;
     margin-left: 10px;
-  }
-  
-  /* Add category button */
-  .add-category-btn {
+}
+
+/* Add category button */
+.add-category-btn {
     display: flex;
     align-items: center;
     background-color: #333;
@@ -126,15 +126,130 @@
     border-radius: 5px;
     cursor: pointer;
     font-size: 16px;
-  }
-  
-  .add-category-btn:hover {
+}
+
+.add-category-btn:hover {
     background-color: #45a049;
-  }
-  
-  .add-category-btn .add-icon {
+}
+
+.add-category-btn .add-icon {
     width: 20px;
     height: 20px;
-    margin-right: 10px; /* Add space between the icon and the text */
-  }
-  
+    margin-right: 10px;
+}
+
+/* Dark Mode Styles */
+.upcoming-container.dark-mode .sidebar {
+    background-color: white;
+    color: #333;
+}
+
+.upcoming-container.dark-mode .upcoming-section {
+    background-color: #333;
+    color: white;
+    box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
+}
+
+.upcoming-container.dark-mode .upcoming-section h2 {
+    color: white;
+}
+
+.upcoming-section input {
+    background-color: #333;
+    color: white;
+    border: 1px solid #ccc;
+}
+
+.upcoming-container.dark-mode .upcoming-section input {
+    background-color: white;
+    color: #333;
+}
+
+/* Dark mode remaining total */
+.upcoming-container.dark-mode .remaining-total input {
+    background-color: white;
+    color: #333;
+}
+
+/* Dark mode sidebar list items */
+.upcoming-container.dark-mode .sidebar nav ul li a {
+    color: #333;
+}
+
+/* Dark mode expense labels */
+.upcoming-container.dark-mode .expense-item span {
+    color: white;
+}
+
+/* Dark mode: Edit, Save, and Delete icons */
+.upcoming-container.dark-mode .edit-icon,
+.upcoming-container.dark-mode .save-icon,
+.upcoming-container.dark-mode .delete-icon {
+    filter: invert(100%);
+}
+
+/* Buttons */
+.allocate-btn,
+.assign-btn,
+.add-category-btn {
+    background-color: #333;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.add-category-btn .add-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+}
+
+.allocate-btn:hover,
+.assign-btn:hover,
+.add-category-btn:hover {
+    background-color: #45a049;
+}
+
+/* Dark Mode: Invert Allocate, Assign, and Add Expense button colors */
+.upcoming-container.dark-mode .allocate-btn,
+.upcoming-container.dark-mode .assign-btn,
+.upcoming-container.dark-mode .add-category-btn {
+    background-color: white;
+    color: #333;
+}
+
+/* Dark mode: Make the add icon color match the label */
+.upcoming-container.dark-mode .add-category-btn .add-icon {
+    filter: invert(100%); /* Invert color to match the label */
+}
+
+/* Hover effect in dark mode */
+.upcoming-container.dark-mode .allocate-btn:hover,
+.upcoming-container.dark-mode .assign-btn:hover,
+.upcoming-container.dark-mode .add-category-btn:hover {
+    background-color: #ccc;
+    color: #333;
+}
+
+/* Dark Mode Toggle Button */
+.dark-mode-toggle {
+    background-color: #333;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+.dark-mode-toggle:hover {
+    background-color: #555;
+}
+
+.upcoming-container.dark-mode .dark-mode-toggle {
+    background-color: white;
+    color: #333;
+}

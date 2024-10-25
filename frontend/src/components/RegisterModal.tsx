@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import { DarkModeContext } from '../context/DarkModeContext'; // Import DarkModeContext
 import './Modal.css';
 
 const RegisterModal: React.FC<{ closeModal: () => void }> = ({ closeModal }) => {
+  const { darkMode } = useContext(DarkModeContext); // Get dark mode state
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -10,15 +12,12 @@ const RegisterModal: React.FC<{ closeModal: () => void }> = ({ closeModal }) => 
   const handleRegister = (e: React.FormEvent) => {
     e.preventDefault(); // Prevent page refresh on form submission
     
-    // Check if passwords match
     if (password !== confirmPassword) {
       setErrorMessage("Passwords do not match");
       return;
     }
 
-    // Proceed with registration logic (e.g., send data to backend)
     console.log("Registering:", { email, password });
-    // Clear form and error message
     setEmail('');
     setPassword('');
     setConfirmPassword('');
@@ -27,11 +26,10 @@ const RegisterModal: React.FC<{ closeModal: () => void }> = ({ closeModal }) => 
   };
 
   return (
-    <div className="modal-overlay">
+    <div className={`modal-overlay ${darkMode ? 'dark-mode' : ''}`}>
       <div className="modal-content">
         <h2>Register</h2>
         <form onSubmit={handleRegister}>
-          {/* Email Field */}
           <label>Email</label>
           <input
             type="email"
@@ -41,7 +39,6 @@ const RegisterModal: React.FC<{ closeModal: () => void }> = ({ closeModal }) => 
             required
           />
 
-          {/* Password Field */}
           <label>Password</label>
           <input
             type="password"
@@ -51,7 +48,6 @@ const RegisterModal: React.FC<{ closeModal: () => void }> = ({ closeModal }) => 
             required
           />
 
-          {/* Re-enter Password Field */}
           <label>Re-enter Password</label>
           <input
             type="password"
@@ -61,19 +57,15 @@ const RegisterModal: React.FC<{ closeModal: () => void }> = ({ closeModal }) => 
             required
           />
 
-          {/* Display error if passwords don't match */}
           {errorMessage && <p className="error-message">{errorMessage}</p>}
 
-          {/* Remember me Checkbox */}
           <label>
             <input type="checkbox" /> Remember me
           </label>
 
-          {/* Submit Button */}
           <button type="submit" className="modal-btn">Register</button>
         </form>
 
-        {/* Close Modal Button */}
         <button onClick={closeModal} className="close-modal">X</button>
       </div>
     </div>

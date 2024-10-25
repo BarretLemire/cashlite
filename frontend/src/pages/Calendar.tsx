@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from 'react-router-dom'; // Import useNavigate for navigation
+import React, { useContext, useState, useEffect } from "react";
+import { useNavigate } from 'react-router-dom';
+import { DarkModeContext } from '../context/DarkModeContext'; // Import DarkModeContext
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import addIcon from "../assets/add.svg";
@@ -7,18 +8,17 @@ import deleteIcon from "../assets/delete.svg";
 import "./Calendar.css";
 
 const CalendarPage: React.FC = () => {
+  const { darkMode } = useContext(DarkModeContext); // Get dark mode state
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [events, setEvents] = useState<{ [key: string]: string[] }>({
     "2024-10-10": ["Phone Bill"],
     "2024-10-21": ["Brunch", "Utility Bill"],
   });
 
-  // State to handle selected expense from localStorage
   const [selectedExpense, setSelectedExpense] = useState<any>(null);
-  const navigate = useNavigate(); // Hook for navigation
+  const navigate = useNavigate();
 
   useEffect(() => {
-    // Retrieve the selected expense from localStorage
     const expense = localStorage.getItem("selectedExpense");
     if (expense) {
       setSelectedExpense(JSON.parse(expense));
@@ -29,21 +29,17 @@ const CalendarPage: React.FC = () => {
     setSelectedDate(date);
   };
 
-  // Handle adding an event or an expense to the selected date
   const handleAddEvent = (date: string) => {
     if (selectedExpense) {
-      // Add the selected expense from localStorage
       const event = `${selectedExpense.category} - $${selectedExpense.amount}`;
       setEvents((prevEvents) => ({
         ...prevEvents,
         [date]: [...(prevEvents[date] || []), event],
       }));
 
-      // Clear the selected expense after adding it
       localStorage.removeItem("selectedExpense");
       setSelectedExpense(null);
     } else {
-      // Prompt user to add a custom event
       const newEvent = prompt("Enter event name:");
       if (newEvent) {
         setEvents((prevEvents) => ({
@@ -66,17 +62,15 @@ const CalendarPage: React.FC = () => {
   };
 
   const formatDateKey = (date: Date) => {
-    return date.toISOString().split("T")[0]; // Format date as YYYY-MM-DD
+    return date.toISOString().split("T")[0];
   };
 
   return (
-    <div className="calendar-container">
-      {/* Dashboard Button (Top Left Corner) */}
+    <div className={`calendar-container ${darkMode ? 'dark-mode' : ''}`}>
       <button className="nav-btn dashboard-btn" onClick={() => navigate('/')}>
         Go to Dashboard
       </button>
 
-      {/* Upcoming Button (Top Right Corner) */}
       <button className="nav-btn upcoming-btn" onClick={() => navigate('/upcoming')}>
         Go to Upcoming
       </button>
@@ -108,7 +102,6 @@ const CalendarPage: React.FC = () => {
               </div>
             ))}
           </div>
-          {/* Add event or expense to the selected date */}
           <button
             className="add-event-btn"
             onClick={() => handleAddEvent(formatDateKey(selectedDate))}
@@ -122,4 +115,3 @@ const CalendarPage: React.FC = () => {
 };
 
 export default CalendarPage;
-8 

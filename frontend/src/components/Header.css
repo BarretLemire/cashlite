@@ -1,14 +1,14 @@
 /* Header container */
 .app-header {
     display: flex;
-    flex-direction: row;                 /* Flexbox layout */
-    justify-content: space-between; /* Distribute space between the sections */
-    align-items: center;           /* Vertically center all elements */
-    padding: 10px 20px;            /* Padding around the header */
-    background-color: white;     /* Light background */
-    color: #333;                   /* Dark text color */
-    width: 100%;                   /* Full width of the viewport */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add slight shadow */
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: white;
+    color: #333;
+    width: 100%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     box-sizing: border-box;
     overflow: hidden;
     margin: 0 auto;
@@ -16,8 +16,8 @@
 
 /* Left section with profile and log out button */
 .header-left {
-    display: flex;                 /* Ensure profile icon and button are inline */
-    align-items: center;           /* Vertically align the icon and text */
+    display: flex;
+    align-items: center;
 }
 
 /* Cashlite Logo styling */
@@ -27,7 +27,6 @@
     font-weight: bold;
     color: #333;
     margin-right: 20px;
-
     border: 2px solid #333;
     padding: 5px 15px;
     border-radius: 10px;
@@ -36,51 +35,83 @@
 
 /* Center section with month and calendar icon */
 .header-center {
-    display: flex;                 /* Flexbox layout for the calendar and date */
-    align-items: center;           /* Vertically center the calendar icon and text */
-    justify-content: center;       /* Center the calendar content in the header */
-    flex: 1;                       /* Take up remaining space for centering */
-    text-align: center;            /* Center text within this section */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    text-align: center;
 }
 
 /* Right section with log in and register buttons */
 .header-right {
-    display: flex;                 /* Ensure Log In and Register buttons are inline */
+    display: flex;
     align-items: center;
-    padding-right: 10px;           /* Vertically align the buttons */
+    padding-right: 10px;
 }
 
 /* Icon styling */
 .header-icon {
     width: 30px;
     height: 30px;
-    margin-right: 10px;            /* Add space between icon and text/button */
+    margin-right: 10px;
 }
 
 /* Button styling */
 .header-btn {
-    background-color: #444;        /* Dark background for the buttons */
-    color: white;                  /* White text */
-    border: none;                  /* Remove border */
-    padding: 10px 15px;             /* Padding around the buttons */
-    border-radius: 5px;            /* Rounded corners */
-    cursor: pointer;               /* Pointer cursor on hover */
-    font-size: 14px;               /* Standard font size */
-    margin-left: 10px;             /* Space between buttons */
+    background-color: #444;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-left: 10px;
 }
 
 .header-btn:hover {
-    background-color: #555;        /* Slightly lighter background on hover */
+    background-color: #555;
 }
 
 /* Center text styling */
 .header-center span {
     font-size: 18px;
-    color: #333;                   /* Dark text color */
+    color: #333;
 }
 
 /* Ensure the header takes up the full width */
 .app-header {
     width: 100%;
     height: auto;
+}
+
+/* Dark Mode styles */
+.app-header.dark-mode {
+    background-color: #333;
+    color: white;
+}
+
+/* Dark Mode Cashlite Logo */
+.app-header.dark-mode .app-header-logo {
+    color: white;
+    border-color: white;
+}
+
+/* Dark Mode center text */
+.app-header.dark-mode .header-center span {
+    color: white;
+}
+
+/* Dark Mode buttons */
+.app-header.dark-mode .header-btn {
+    background-color: white;
+    color: #333;
+}
+
+.app-header.dark-mode .header-btn:hover {
+    background-color: #ccc;
+}
+
+/* Dark Mode calendar icon */
+.app-header.dark-mode .header-center img {
+    filter: invert(100%); /* Invert color to white for dark mode */
 }

@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { DarkModeContext } from '../context/DarkModeContext'; // Import DarkModeContext
 import './Modal.css';
 
 const SignInModal: React.FC<{ closeModal: () => void }> = ({ closeModal }) => {
+  const { darkMode } = useContext(DarkModeContext); // Get dark mode state
+
   return (
-    <div className="modal-overlay">
+    <div className={`modal-overlay ${darkMode ? 'dark-mode' : ''}`}>
       <div className="modal-content">
         <h2>Log In</h2>
         <form>
