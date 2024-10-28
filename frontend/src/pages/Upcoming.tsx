@@ -91,7 +91,7 @@ const UpcomingPage = () => {
                   <button className="allocate-btn" onClick={() => handleAllocate(item)}>Allocate</button>
                   <button className="assign-btn" onClick={() => handleAssignDate(item)}>Assign Date</button>
                 </div>
-              )}
+              )}   
 
               {isEditMode && (
                 <img
@@ -105,7 +105,7 @@ const UpcomingPage = () => {
           ))}
 
           <button className="add-category-btn">
-            <img src={addIcon} alt="Add" className="add-icon" /> Add Irregular Expense
+            <img src={addIcon} alt="Add" className="add-icon" /> Add Upcoming Expense
           </button>
         </section>
       </div>

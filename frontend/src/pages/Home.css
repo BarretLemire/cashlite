@@ -1,41 +1,39 @@
-/* Home.css */
-
 /* Full-page layout: sidebar + main content */
 .home-container {
     display: flex;
     height: 100vh;
     width: 100vw;
-  }
-  
-  .sidebar {
+}
+
+.sidebar {
     width: 200px;
     background-color: #333;
     color: white;
     padding: 20px;
-  }
-  
-  .sidebar nav ul li {
+}
+
+.sidebar nav ul li {
     margin-bottom: 20px;
-  }
-  
-  .sidebar nav ul li a {
+}
+
+.sidebar nav ul li a {
     color: white;
     text-decoration: none;
-  }
-  
-  .sidebar nav ul li a:hover {
+}
+
+.sidebar nav ul li a:hover {
     text-decoration: underline;
     color: #ccc;
-  }
-  
-  .content {
+}
+
+.content {
     flex: 1;
     display: flex;
     flex-direction: column;
-  }
-  
-  .income-section,
-  .expense-section {
+}
+
+.income-section,
+.expense-section {
     position: relative;
     padding: 20px;
     background-color: #f4f4f4;
@@ -43,51 +41,51 @@
     margin: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     flex: 1;
-  }
-  
-  .income-section h2,
-  .expense-section h2 {
+}
+
+.income-section h2,
+.expense-section h2 {
     color: #333;
-  }
-  
-  /* Pen icon in top-right */
-  .edit-icon {
+}
+
+/* Pen icon in top-right */
+.edit-icon {
     position: absolute;
     top: 10px;
     right: 10px;
     width: 30px;
     height: 30px;
     cursor: pointer;
-  }
-  
-  /* Save icon in bottom-right */
-  .save-icon {
+}
+
+/* Save icon in bottom-right */
+.save-icon {
     position: absolute;
     bottom: 10px;
     right: 10px;
     width: 30px;
     height: 30px;
     cursor: pointer;
-  }
-  
-  /* Delete icon */
-  .delete-icon {
+}
+
+/* Delete icon */
+.delete-icon {
     width: 30px;
     height: 30px;
     cursor: pointer;
     margin-left: 10px;
-  }
-  
-  /* Income and expense items */
-  .income-item,
-  .expense-item {
+}
+
+/* Income and expense items */
+.income-item,
+.expense-item {
     color: #333;
     display: flex;
     align-items: center;
     margin: 10px 0;
-  }
-  
-  input[type="number"] {
+}
+
+input[type="number"] {
     width: 100px;
     margin-right: 10px;
     padding: 5px;
@@ -95,24 +93,33 @@
     color: white;
     border: 1px solid #ccc;
     border-radius: 5px;
-  }
-  
-  /* Total field */
-  .total-field {
+}
+
+/* Total field */
+.total-field {
     position: absolute;
     bottom: 10px;
     left: 10px;
     display: flex;
     align-items: center;
-  }
-  
-  .total-field label {
+}
+
+.total-field label {
     margin-right: 10px;
     color: #333;
-  }
-  
-  /* Add income/expense button */
-  .add-category-btn {
+}
+
+.total-field input[type="number"] {
+    width: 100px;
+    padding: 5px;
+    background-color: #333;
+    color: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Add income/expense button */
+.add-category-btn {
     display: flex;
     align-items: center;
     background-color: #333;
@@ -122,70 +129,78 @@
     border-radius: 5px;
     cursor: pointer;
     font-size: 16px;
-  }
-  
-  .add-category-btn:hover {
+}
+
+.add-category-btn:hover {
     background-color: #45a049;
-  }
-  
-  .add-icon {
+}
+
+.add-icon {
     width: 20px;
     height: 20px;
     margin-right: 10px;
-  }
-  
-  /* Dark Mode Specific Styles */
-  .home-container.dark-mode .sidebar {
+}
+
+/* Dark Mode Specific Styles */
+.home-container.dark-mode .sidebar {
     background-color: white;
     color: #333;
-  }
-  
-  .home-container.dark-mode .sidebar nav ul li a {
+}
+
+.home-container.dark-mode .sidebar nav ul li a {
     color: #333;
-  }
-  
-  .home-container.dark-mode .income-section,
-  .home-container.dark-mode .expense-section {
+}
+
+.home-container.dark-mode .income-section,
+.home-container.dark-mode .expense-section {
     background-color: #333;
     color: white;
     box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
-  }
-  
-  .home-container.dark-mode .income-section h2,
-  .home-container.dark-mode .expense-section h2 {
+}
+
+.home-container.dark-mode .income-section h2,
+.home-container.dark-mode .expense-section h2 {
     color: white;
-  }
-  
-  /* Dark Mode: Make edit and save icons white */
-  .home-container.dark-mode .edit-icon,
-  .home-container.dark-mode .save-icon {
-    filter: invert(100%); /* Invert color to make them white in dark mode */
-  }
-  
-  /* Dark Mode: Make income and expense labels white */
-  .home-container.dark-mode .income-item,
-  .home-container.dark-mode .expense-item {
-    color: white; /* Set text color to white in dark mode */
-  }
-  
-  /* Total field dark mode */
-  .home-container.dark-mode .total-field label {
+}
+
+/* Dark Mode: Invert icons */
+.home-container.dark-mode .edit-icon,
+.home-container.dark-mode .save-icon,
+.home-container.dark-mode .delete-icon {
+    filter: invert(100%);
+}
+
+/* Dark Mode: Make income and expense labels white */
+.home-container.dark-mode .income-item,
+.home-container.dark-mode .expense-item {
     color: white;
-  }
-  
-  .add-category-btn {
-    display: flex;
-    align-items: center;
-    background-color: #333;
+}
+
+/* Dark Mode: Invert input fields for income, expense, and total fields */
+.home-container.dark-mode .income-item input,
+.home-container.dark-mode .expense-item input,
+.home-container.dark-mode .total-field input {
+    background-color: white;
+    color: #333;
+    border: 1px solid #ccc;
+}
+
+/* Dark Mode: Invert the total field labels */
+.home-container.dark-mode .total-field label {
     color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-  }
-  
-  .add-category-btn:hover {
-    background-color: #455;
-  }
-  
+}
+
+/* Dark Mode: Add income/expense buttons with white background and #333 text */
+.home-container.dark-mode .add-category-btn {
+    background-color: white;
+    color: #333;
+}
+
+.home-container.dark-mode .add-category-btn .add-icon {
+    filter: invert(0%) brightness(0) saturate(100%);
+}
+
+/* Hover state for add button in dark mode */
+.home-container.dark-mode .add-category-btn:hover {
+    background-color: #ccc;
+}
