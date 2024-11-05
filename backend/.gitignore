@@ -1,0 +1,49 @@
+# Virtual environment
+.venv/
+env/
+venv/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*.egg-info/
+*.egg
+
+# IDE/editor specific
+.vscode/
+.idea/
+
+# MacOS specific
+.DS_Store
+
+# Logs
+*.log
+
+# Database
+*.sqlite3
+*.db
+db.sqlite3
+
+# Environment variables
+.env
+.env.*
+
+# Alembic migration history
+migrations/versions/*
+
+# Compiled binaries
+*.so
+
+# Byte-compiled Python
+*.pyo
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Test coverage
+htmlcov/
+.tox/
+.nox/
+
+# pyre
+.pyre/
