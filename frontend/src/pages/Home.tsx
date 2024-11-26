@@ -68,6 +68,33 @@ const HomePage: React.FC<{ isLoggedIn: boolean }> = ({ isLoggedIn }) => {
     }
   }, [isLoggedIn]);
 
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as Node;
+  
+      if (
+        newIncomeVisible &&
+        incomeRef.current &&
+        !incomeRef.current.contains(target)
+      ) {
+        setNewIncomeVisible(false);
+      }
+  
+      if (
+        newExpenseVisible &&
+        expenseRef.current &&
+        !expenseRef.current.contains(target)
+      ) {
+        setNewExpenseVisible(false);
+      }
+    };
+  
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [newIncomeVisible, newExpenseVisible]);
+
   const handleAddIncome = async () => {
     const token = localStorage.getItem('authToken');
     if (!token) {
