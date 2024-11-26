@@ -1,11 +1,10 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { DarkModeContext } from '../context/DarkModeContext';
 import './Upcoming.css';
 
 import penIcon from '../assets/pen.svg';
 import deleteIcon from '../assets/delete.svg';
-import saveIcon from '../assets/save.svg';
 import addIcon from '../assets/add.svg';
 
 const API_BASE_URL = 'http://127.0.0.1:8000';
@@ -13,19 +12,19 @@ const API_BASE_URL = 'http://127.0.0.1:8000';
 const UpcomingPage = () => {
   const { darkMode, toggleDarkMode } = useContext(DarkModeContext);
   const [isEditMode, setEditMode] = useState(false);
-  const [remainingTotal, setRemainingTotal] = useState(1000);
+  const [remainingTotal, setRemainingTotal] = useState(0); // Initialize dynamically
   const [upcomingExpenses, setUpcomingExpenses] = useState([]);
   const [newExpenseVisible, setNewExpenseVisible] = useState(false);
   const [newExpense, setNewExpense] = useState({
     amount: '',
     category: '',
-    date: '', // Added date field
-    description: '', // Added description field
+    date: '',
+    description: '',
   });
 
   const navigate = useNavigate();
+  const formRef = useRef<HTMLDivElement>(null); // Ref for the add-expense container
 
-  // Fetch upcoming expenses from the backend
   useEffect(() => {
     const fetchUpcomingExpenses = async () => {
       const token = localStorage.getItem('authToken');
@@ -50,8 +49,61 @@ const UpcomingPage = () => {
       }
     };
 
+    const fetchTotals = async () => {
+      const token = localStorage.getItem('authToken');
+      if (!token) return;
+
+      try {
+        const incomeResponse = await fetch(`${API_BASE_URL}/incomes/`, {
+          headers: { 'Authorization': `Bearer ${token}` },
+        });
+        const expenseResponse = await fetch(`${API_BASE_URL}/expenses/`, {
+          headers: { 'Authorization': `Bearer ${token}` },
+        });
+
+        if (incomeResponse.ok && expenseResponse.ok) {
+          const incomes = await incomeResponse.json();
+          const expenses = await expenseResponse.json();
+
+          const totalIncome = incomes.reduce((sum, income) => sum + income.amount, 0);
+          const totalExpenses = expenses.reduce((sum, expense) => sum + expense.amount, 0);
+
+          const calculatedTotal = totalIncome - totalExpenses;
+
+          const savedRemainingTotal = localStorage.getItem('remainingTotal');
+          const finalTotal = savedRemainingTotal !== null ? parseFloat(savedRemainingTotal) : calculatedTotal;
+
+          setRemainingTotal(finalTotal);
+          localStorage.setItem('remainingTotal', finalTotal.toString());
+        } else {
+          console.error('Failed to fetch totals.');
+        }
+      } catch (error) {
+        console.error('Error fetching totals:', error);
+      }
+    };
+
     fetchUpcomingExpenses();
+    fetchTotals();
   }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (formRef.current && !formRef.current.contains(event.target as Node)) {
+        setNewExpenseVisible(false); // Hide the fields when clicked outside
+      }
+    };
+
+    if (newExpenseVisible) {
+      document.addEventListener('mousedown', handleClickOutside);
+    } else {
+      document.removeEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [newExpenseVisible]);
 
   const toggleEditMode = () => {
     setEditMode(!isEditMode);
@@ -63,24 +115,23 @@ const UpcomingPage = () => {
   };
 
   const handleAllocate = (expense) => {
-    setRemainingTotal(remainingTotal - expense.amount);
+    const updatedTotal = remainingTotal - expense.amount;
+    setRemainingTotal(updatedTotal);
+    localStorage.setItem('remainingTotal', updatedTotal.toString());
   };
 
-  const handleDeleteExpense = async (id: number) => {
+  const handleDeleteExpense = async (id) => {
     const token = localStorage.getItem('authToken');
     if (!token) return;
 
     try {
       const response = await fetch(`${API_BASE_URL}/upcoming_expenses/${id}`, {
         method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       });
 
       if (response.ok) {
-        setUpcomingExpenses((prevItems) => prevItems.filter((item) => item.id !== id));
-        console.log('Expense deleted successfully');
+        setUpcomingExpenses((prev) => prev.filter((item) => item.id !== id));
       } else {
         console.error('Failed to delete expense.');
       }
@@ -98,19 +149,19 @@ const UpcomingPage = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           amount: parseFloat(newExpense.amount),
           category: newExpense.category,
-          date: newExpense.date, // Include date
-          description: newExpense.description, // Include description
+          date: newExpense.date,
+          description: newExpense.description,
         }),
       });
 
       if (response.ok) {
         const createdExpense = await response.json();
-        setUpcomingExpenses((prevItems) => [...prevItems, createdExpense]);
+        setUpcomingExpenses((prev) => [...prev, createdExpense]);
         setNewExpense({ amount: '', category: '', date: '', description: '' });
         setNewExpenseVisible(false);
       } else {
@@ -119,11 +170,6 @@ const UpcomingPage = () => {
     } catch (error) {
       console.error('Error adding expense:', error);
     }
-  };
-
-  const handleInputChange = (id: number, value: number) => {
-    if (isNaN(value)) return;
-    setUpcomingExpenses(upcomingExpenses.map((item) => (item.id === id ? { ...item, amount: value } : item)));
   };
 
   return (
@@ -146,14 +192,12 @@ const UpcomingPage = () => {
       <div className="content">
         <section className="upcoming-section">
           <img src={penIcon} alt="Edit" onClick={toggleEditMode} className="edit-icon" />
-          <img src={saveIcon} alt="Save" className="save-icon" onClick={() => setEditMode(false)} />
-
           <div className="remaining-total">
             <h2>Remaining Total</h2>
             <input
               type="number"
               value={remainingTotal}
-              readOnly={!isEditMode}
+              readOnly
               min="0"
             />
           </div>
@@ -164,7 +208,6 @@ const UpcomingPage = () => {
               <input
                 type="number"
                 value={item.amount}
-                onChange={(e) => handleInputChange(item.id, parseFloat(e.target.value))}
                 readOnly={!isEditMode}
                 min="0"
               />
@@ -189,7 +232,7 @@ const UpcomingPage = () => {
           ))}
 
           {newExpenseVisible && (
-            <div className="add-expense">
+            <div className="add-expense" ref={formRef}>
               <input
                 type="number"
                 placeholder="Amount"
