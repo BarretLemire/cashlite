@@ -47,3 +47,4 @@ htmlcov/
 
 # pyre
 .pyre/
+backend/.env

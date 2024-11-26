@@ -21,7 +21,8 @@ class IncomeBase(BaseModel):
     category: str
 
 class IncomeCreate(IncomeBase):
-    pass
+    amount: float
+    category: str
 
 class Income(IncomeBase):
     id: int

@@ -1,4 +1,6 @@
 from sqlalchemy.orm import Session
+
+from app import schemas
 from . import models
 from datetime import date
 from typing import Optional
@@ -44,12 +46,17 @@ def delete_expense(db: Session, expense_id: int):
     return False
 
 # Income CRUD
-def create_income(db: Session, user_id: int, amount: float, category: str):
-    db_income = models.Income(amount=amount, category=category, user_id=user_id)
+def create_income(db: Session, income: schemas.IncomeCreate, user_id: int):
+    db_income = models.Income(
+        amount=income.amount,
+        category=income.category,
+        user_id=user_id,  # Associate income with the authenticated user
+    )
     db.add(db_income)
     db.commit()
     db.refresh(db_income)
     return db_income
+
 
 def get_incomes_by_user(db: Session, user_id: int):
     return db.query(models.Income).filter(models.Income.user_id == user_id).all()
@@ -69,13 +76,27 @@ def update_income(db: Session, income_id: int, amount: Optional[float] = None, c
     db.refresh(income)
     return income
 
-def delete_income(db: Session, income_id: int):
-    income = db.query(models.Income).filter(models.Income.id == income_id).first()
-    if income:
+def delete_income(db: Session, income_id: int, user_id: int) -> bool:
+    try:
+        # Check if the income exists and belongs to the current user
+        income = db.query(models.Income).filter(
+            models.Income.id == income_id, models.Income.user_id == user_id
+        ).first()
+        
+        if not income:
+            print(f"Income with ID {income_id} not found for user ID {user_id}")
+            return False
+        
+        # Delete the income entry
         db.delete(income)
         db.commit()
+        print(f"Income with ID {income_id} deleted successfully.")
         return True
-    return False
+    except Exception as e:
+        print(f"Error while deleting income: {e}")
+        db.rollback()  # Rollback in case of an error
+        return False
+
 
 #UpcomingExpense CRUD
 
