@@ -204,3 +204,42 @@ input[type="number"] {
 .home-container.dark-mode .add-category-btn:hover {
     background-color: #ccc;
 }
+
+.add-income,
+.add-expense {
+    display: flex;
+    flex-direction: row;
+    align-items: center; /* Align items vertically in the center */
+    margin-top: 10px; /* Add spacing from other elements */
+    gap: 10px; /* Ensure consistent spacing between elements */
+}
+
+.input-field {
+    width: 100px;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.add-income button,
+.add-expense button {
+    padding: 5px 15px;
+    font-size: 14px;
+    border-radius: 5px;
+    height: 40px; /* Match the height of the input fields */
+}
+
+/* Optional dark mode styling */
+.home-container.dark-mode .input-field {
+    background-color: #333;
+    color: white;
+    border: 1px solid #555;
+}
+
+.home-container.dark-mode .add-income button,
+.home-container.dark-mode .add-expense button {
+    background-color: white;
+    color: #333;
+    border: 1px solid #555;
+}
+

@@ -11,16 +11,23 @@ import { DarkModeProvider } from "./context/DarkModeContext";
 const App = () => {
   const [isSignInOpen, setIsSignInOpen] = useState(false); // State for SignIn modal
   const [isRegisterOpen, setIsRegisterOpen] = useState(false); // State for Register modal
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // State to track if the user is logged in
+  const [isLoggedIn, setIsLoggedIn] = useState(
+    !!localStorage.getItem("authToken") // Determine initial login state from localStorage
+  );
 
   const handleLogout = () => {
-    setIsLoggedIn(false); // Handle logout
+    localStorage.removeItem("authToken"); // Remove token on logout
+    setIsLoggedIn(false); // Update login state
+  };
+
+  const handleLoginSuccess = () => {
+    setIsLoggedIn(true); // Set user as logged in after successful login
+    setIsSignInOpen(false); // Close the SignIn modal
   };
 
   return (
     <DarkModeProvider>
       <Router>
-        {/* Pass the modal open functions to Header */}
         <Header
           isLoggedIn={isLoggedIn}
           handleLogout={handleLogout}
@@ -30,7 +37,10 @@ const App = () => {
 
         {/* Modals for Sign In and Register */}
         {isSignInOpen && (
-          <SignInModal closeModal={() => setIsSignInOpen(false)} />
+          <SignInModal
+            closeModal={() => setIsSignInOpen(false)}
+            onLoginSuccess={handleLoginSuccess} // Pass the login success handler
+          />
         )}
 
         {isRegisterOpen && (
@@ -39,7 +49,7 @@ const App = () => {
 
         {/* Page Routes */}
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Home isLoggedIn={isLoggedIn} />} />
           <Route path="calendar" element={<Calendar />} />
           <Route path="upcoming" element={<Upcoming />} />
         </Routes>

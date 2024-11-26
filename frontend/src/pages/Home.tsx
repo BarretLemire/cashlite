@@ -1,146 +1,326 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect, useRef } from 'react';
 import { DarkModeContext } from '../context/DarkModeContext';
-import './Home.css'; 
+import './Home.css';
 
 import penIcon from '../assets/pen.svg';
 import deleteIcon from '../assets/delete.svg';
 import saveIcon from '../assets/save.svg';
 import addIcon from '../assets/add.svg';
 
-const HomePage = () => {
-    const { darkMode, toggleDarkMode } = useContext(DarkModeContext); // Get dark mode state
-    const [isEditMode, setEditMode] = useState(false);
-    const [incomeItems, setIncomeItems] = useState([
-      { id: 1, amount: 750, category: "Disability" },
-      { id: 2, amount: 2000, category: "Housing Allowance" },
-    ]);
-    const [expenseItems, setExpenseItems] = useState([
-      { id: 1, amount: 240, category: "Gas" },
-      { id: 2, amount: 118, category: "Phone" },
-    ]);
+const API_BASE_URL = 'http://127.0.0.1:8000';
 
-    const totalIncome = incomeItems.reduce((total, item) => total + item.amount, 0);
-    const totalExpenses = expenseItems.reduce((total, item) => total + item.amount, 0);
+const HomePage: React.FC<{ isLoggedIn: boolean }> = ({ isLoggedIn }) => {
+  const { darkMode, toggleDarkMode } = useContext(DarkModeContext);
+  const [isEditMode, setEditMode] = useState(false);
+  const [incomeItems, setIncomeItems] = useState([]);
+  const [expenseItems, setExpenseItems] = useState([]);
+  const [newIncomeVisible, setNewIncomeVisible] = useState(false);
+  const [newExpenseVisible, setNewExpenseVisible] = useState(false);
+  const [newIncome, setNewIncome] = useState({ amount: '', category: '' });
+  const [newExpense, setNewExpense] = useState({ amount: '', category: '' });
 
-    const toggleEditMode = () => {
-      setEditMode(!isEditMode);
-    };
+  const incomeRef = useRef<HTMLDivElement>(null);
+  const expenseRef = useRef<HTMLDivElement>(null);
 
-    const handleSave = () => {
-      console.log('Save changes');
-      setEditMode(false);
-    };
+  // Fetch income and expense data when the user logs in
+  useEffect(() => {
+    const fetchData = async () => {
+      const token = localStorage.getItem('authToken');
+      if (!token) {
+        setIncomeItems([]);
+        setExpenseItems([]);
+        return;
+      }
 
-    const handleDeleteItem = (id: number, type: 'income' | 'expense') => {
-      if (type === 'income') {
-        setIncomeItems(incomeItems.filter(item => item.id !== id));
-      } else {
-        setExpenseItems(expenseItems.filter(item => item.id !== id));
+      try {
+        const incomeResponse = await fetch(`${API_BASE_URL}/incomes/`, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
+        });
+
+        const expenseResponse = await fetch(`${API_BASE_URL}/expenses/`, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
+        });
+
+        if (incomeResponse.ok && expenseResponse.ok) {
+          const incomes = await incomeResponse.json();
+          const expenses = await expenseResponse.json();
+          setIncomeItems(incomes);
+          setExpenseItems(expenses);
+        } else {
+          console.error('Failed to fetch income/expense data.');
+        }
+      } catch (error) {
+        console.error('Error fetching income/expense data:', error);
       }
     };
 
-    const handleInputChange = (id: number, value: number, type: 'income' | 'expense') => {
-      if (isNaN(value)) return;
-      if (type === 'income') {
-        setIncomeItems(incomeItems.map(item => (item.id === id ? { ...item, amount: value } : item)));
+    if (isLoggedIn) {
+      fetchData();
+    } else {
+      setIncomeItems([]);
+      setExpenseItems([]);
+    }
+  }, [isLoggedIn]);
+
+  const handleAddIncome = async () => {
+    const token = localStorage.getItem('authToken');
+    if (!token) {
+      console.error('User not logged in. Cannot add income.');
+      return;
+    }
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/incomes/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          amount: parseFloat(newIncome.amount),
+          category: newIncome.category,
+        }),
+      });
+
+      if (response.ok) {
+        const createdIncome = await response.json();
+        setIncomeItems((prevItems) => [...prevItems, createdIncome]);
+        setNewIncome({ amount: '', category: '' });
+        setNewIncomeVisible(false);
       } else {
-        setExpenseItems(expenseItems.map(item => (item.id === id ? { ...item, amount: value } : item)));
+        console.error('Failed to add new income.');
       }
-    };
-
-    return (
-      <div className={`home-container ${darkMode ? 'dark-mode' : ''}`}>
-        <aside className="sidebar">
-          <nav>
-            <ul>
-              <li><a href="/">Dashboard</a></li>
-              <li><a href="/upcoming">Remaining/Upcoming</a></li>
-              <li><a href="/calendar">Calendar</a></li>
-              {/* Dark Mode Toggle Button */}
-            <li>
-              <a href="#" onClick={toggleDarkMode}>
-                {darkMode ? 'Light Mode' : 'Dark Mode'}
-              </a>
-            </li>
-            </ul>
-          </nav>
-        </aside>
-
-        <div className="content">
-          {/* Income Section */}
-          <section className="income-section">
-            <img src={penIcon} alt="Edit" onClick={toggleEditMode} className="edit-icon" />
-            <img src={saveIcon} alt="Save" className="save-icon" onClick={handleSave} />
-            <h2>Income</h2>
-            {incomeItems.map((item) => (
-              <div key={item.id} className="income-item">
-                <input
-                  type="number"
-                  value={item.amount}
-                  onChange={(e) => handleInputChange(item.id, parseFloat(e.target.value), 'income')}
-                  readOnly={!isEditMode}
-                  min="0"
-                />
-                <span>{item.category}</span>
-                {isEditMode && (
-                  <img
-                    src={deleteIcon}
-                    alt="Delete"
-                    className="delete-icon"
-                    onClick={() => handleDeleteItem(item.id, 'income')}
-                  />
-                )}
-              </div>
-            ))}
-
-            <div className="total-field">
-              <label>Total Income</label>
-              <input type="number" value={totalIncome} readOnly />
-            </div>
-
-            <button className="add-category-btn">
-              <img src={addIcon} alt="Add" className="add-icon" /> Add Income
-            </button>
-          </section>
-
-          {/* Expenses Section */}
-          <section className="expense-section">
-            <img src={penIcon} alt="Edit" onClick={toggleEditMode} className="edit-icon" />
-            <img src={saveIcon} alt="Save" className="save-icon" onClick={handleSave} />
-            <h2>Expenses</h2>
-            {expenseItems.map((item) => (
-              <div key={item.id} className="expense-item">
-                <input
-                  type="number"
-                  value={item.amount}
-                  onChange={(e) => handleInputChange(item.id, parseFloat(e.target.value), 'expense')}
-                  readOnly={!isEditMode}
-                  min="0"
-                />
-                <span>{item.category}</span>
-                {isEditMode && (
-                  <img
-                    src={deleteIcon}
-                    alt="Delete"
-                    className="delete-icon"
-                    onClick={() => handleDeleteItem(item.id, 'expense')}
-                  />
-                )}
-              </div>
-            ))}
-
-            <div className="total-field">
-              <label>Total Expenses</label>
-              <input type="number" value={totalExpenses} readOnly />
-            </div>
-
-            <button className="add-category-btn">
-              <img src={addIcon} alt="Add" className="add-icon" /> Add Expense
-            </button>
-          </section>
-        </div>
-      </div>
-    );
+    } catch (error) {
+      console.error('Error adding income:', error);
+    }
   };
+
+  const handleAddExpense = async () => {
+    const token = localStorage.getItem('authToken');
+    if (!token) {
+      console.error('User not logged in. Cannot add expense.');
+      return;
+    }
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/expenses/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          amount: parseFloat(newExpense.amount),
+          category: newExpense.category,
+        }),
+      });
+
+      if (response.ok) {
+        const createdExpense = await response.json();
+        setExpenseItems((prevItems) => [...prevItems, createdExpense]);
+        setNewExpense({ amount: '', category: '' });
+        setNewExpenseVisible(false);
+      } else {
+        console.error('Failed to add new expense.');
+      }
+    } catch (error) {
+      console.error('Error adding expense:', error);
+    }
+  };
+
+  const handleDeleteIncome = async (id: number) => {
+    const token = localStorage.getItem('authToken');
+    if (!token) return;
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/incomes/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        setIncomeItems((prevItems) => prevItems.filter((item) => item.id !== id));
+        console.log('Income deleted successfully');
+      } else {
+        console.error('Failed to delete income.');
+      }
+    } catch (error) {
+      console.error('Error deleting income:', error);
+    }
+  };
+
+  const handleDeleteExpense = async (id: number) => {
+    const token = localStorage.getItem('authToken');
+    if (!token) return;
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/expenses/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        setExpenseItems((prevItems) => prevItems.filter((item) => item.id !== id));
+        console.log('Expense deleted successfully');
+      } else {
+        console.error('Failed to delete expense.');
+      }
+    } catch (error) {
+      console.error('Error deleting expense:', error);
+    }
+  };
+
+  const toggleEditMode = () => {
+    setEditMode(!isEditMode);
+  };
+
+  const totalIncome = incomeItems.reduce((total, item) => total + item.amount, 0);
+  const totalExpenses = expenseItems.reduce((total, item) => total + item.amount, 0);
+
+  return (
+    <div className={`home-container ${darkMode ? 'dark-mode' : ''}`}>
+      <aside className="sidebar">
+        <nav>
+          <ul>
+            <li><a href="/">Dashboard</a></li>
+            <li><a href="/upcoming">Remaining/Upcoming</a></li>
+            <li><a href="/calendar">Calendar</a></li>
+            <li><a href="#" onClick={toggleDarkMode}>
+              {darkMode ? 'Light Mode' : 'Dark Mode'}
+            </a></li>
+          </ul>
+        </nav>
+      </aside>
+
+      <div className="content">
+        {/* Income Section */}
+        <section className="income-section">
+          <img src={penIcon} alt="Edit" onClick={toggleEditMode} className="edit-icon" />
+          <h2>Income</h2>
+          {incomeItems.map((item) => (
+            <div key={item.id} className="income-item">
+              <input
+                type="number"
+                value={item.amount}
+                readOnly={!isEditMode}
+              />
+              <span>{item.category}</span>
+              {isEditMode && (
+                <img
+                  src={deleteIcon}
+                  alt="Delete"
+                  className="delete-icon"
+                  onClick={() => handleDeleteIncome(item.id)}
+                />
+              )}
+            </div>
+          ))}
+
+          {newIncomeVisible && (
+            <div className="add-income" ref={incomeRef}>
+              <input
+                type="number"
+                placeholder="Amount"
+                value={newIncome.amount}
+                onChange={(e) => setNewIncome({ ...newIncome, amount: e.target.value })}
+                className={darkMode ? 'dark-input input-field' : 'input-field'}
+              />
+              <input
+                type="text"
+                placeholder="Category"
+                value={newIncome.category}
+                onChange={(e) => setNewIncome({ ...newIncome, category: e.target.value })}
+                className={darkMode ? 'dark-input input-field' : 'input-field'}
+              />
+              <button
+                onClick={handleAddIncome}
+                className={darkMode ? 'modal-btn dark-btn' : 'modal-btn'}
+              >
+                Save Income
+              </button>
+            </div>
+          )}
+
+          <div className="total-field">
+            <label>Total Income</label>
+            <input type="number" value={totalIncome} readOnly />
+          </div>
+
+          <button className="add-category-btn" onClick={() => setNewIncomeVisible(true)}>
+            <img src={addIcon} alt="Add" className="add-icon" /> Add Income
+          </button>
+        </section>
+
+        {/* Expenses Section */}
+        <section className="expense-section">
+          <img src={penIcon} alt="Edit" onClick={toggleEditMode} className="edit-icon" />
+          <h2>Expenses</h2>
+          {expenseItems.map((item) => (
+            <div key={item.id} className="expense-item">
+              <input
+                type="number"
+                value={item.amount}
+                readOnly={!isEditMode}
+              />
+              <span>{item.category}</span>
+              {isEditMode && (
+                <img
+                  src={deleteIcon}
+                  alt="Delete"
+                  className="delete-icon"
+                  onClick={() => handleDeleteExpense(item.id)}
+                />
+              )}
+            </div>
+          ))}
+
+          {newExpenseVisible && (
+            <div className="add-expense" ref={expenseRef}>
+              <input
+                type="number"
+                placeholder="Amount"
+                value={newExpense.amount}
+                onChange={(e) => setNewExpense({ ...newExpense, amount: e.target.value })}
+                className={darkMode ? 'dark-input input-field' : 'input-field'}
+              />
+              <input
+                type="text"
+                placeholder="Category"
+                value={newExpense.category}
+                onChange={(e) => setNewExpense({ ...newExpense, category: e.target.value })}
+                className={darkMode ? 'dark-input input-field' : 'input-field'}
+              />
+              <button
+                onClick={handleAddExpense}
+                className={darkMode ? 'modal-btn dark-btn' : 'modal-btn'}
+              >
+                Save Expense
+              </button>
+            </div>
+          )}
+
+          <div className="total-field">
+            <label>Total Expenses</label>
+            <input type="number" value={totalExpenses} readOnly />
+          </div>
+
+          <button className="add-category-btn" onClick={() => setNewExpenseVisible(true)}>
+            <img src={addIcon} alt="Add" className="add-icon" /> Add Expense
+          </button>
+        </section>
+      </div>
+    </div>
+  );
+};
 
 export default HomePage;

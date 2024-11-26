@@ -115,3 +115,12 @@
 .app-header.dark-mode .header-center img {
     filter: invert(100%); /* Invert color to white for dark mode */
 }
+
+.header-icon.dark-icon {
+    filter: invert(100%);
+}
+
+.header-username {
+    margin-left: 10px;
+    color: #fff
+}
