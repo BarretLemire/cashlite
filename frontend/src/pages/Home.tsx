@@ -18,6 +18,7 @@ const HomePage: React.FC<{ isLoggedIn: boolean }> = ({ isLoggedIn }) => {
   const [newExpenseVisible, setNewExpenseVisible] = useState(false);
   const [newIncome, setNewIncome] = useState({ amount: '', category: '' });
   const [newExpense, setNewExpense] = useState({ amount: '', category: '' });
+  
 
   const incomeRef = useRef<HTMLDivElement>(null);
   const expenseRef = useRef<HTMLDivElement>(null);
@@ -213,6 +214,7 @@ const HomePage: React.FC<{ isLoggedIn: boolean }> = ({ isLoggedIn }) => {
 
   const totalIncome = incomeItems.reduce((total, item) => total + item.amount, 0);
   const totalExpenses = expenseItems.reduce((total, item) => total + item.amount, 0);
+
 
   return (
     <div className={`home-container ${darkMode ? 'dark-mode' : ''}`}>

@@ -2,14 +2,17 @@ import React, { useState, useContext } from 'react';
 import { DarkModeContext } from '../context/DarkModeContext'; // Import DarkModeContext
 import './Modal.css';
 
+const API_BASE_URL = 'http://127.0.0.1:8000';
+
 const RegisterModal: React.FC<{ closeModal: () => void }> = ({ closeModal }) => {
   const { darkMode } = useContext(DarkModeContext); // Get dark mode state
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
 
-  const handleRegister = (e: React.FormEvent) => {
+  const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault(); // Prevent page refresh on form submission
     
     if (password !== confirmPassword) {
@@ -17,18 +20,36 @@ const RegisterModal: React.FC<{ closeModal: () => void }> = ({ closeModal }) => 
       return;
     }
 
-    console.log("Registering:", { email, password });
-    setEmail('');
-    setPassword('');
-    setConfirmPassword('');
-    setErrorMessage('');
-    closeModal();
+    try {
+      const response = await fetch(`${API_BASE_URL}/users/users`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+      if (response.ok) {
+        setSuccessMessage("User registered successfully. Please log in.");
+        setEmail('');
+        setPassword('');
+        setConfirmPassword('');
+        setErrorMessage('');
+        setTimeout(closeModal, 2000); // Close modal after 2 seconds
+      } else {
+        const error = await response.json();
+        setErrorMessage(`Error: ${error.detail || 'Failed to register.'}`);
+      }
+    } catch (error) {
+      setErrorMessage('Error: Unable to connect to the server.');
+    }
   };
 
   return (
     <div className={`modal-overlay ${darkMode ? 'dark-mode' : ''}`}>
       <div className="modal-content">
         <h2>Register</h2>
+
+        {successMessage ? ( // Display success message if present
+          <p className="success-message">{successMessage}</p>
+        ) : (
         <form onSubmit={handleRegister}>
           <label>Email</label>
           <input
@@ -65,6 +86,7 @@ const RegisterModal: React.FC<{ closeModal: () => void }> = ({ closeModal }) => 
 
           <button type="submit" className="modal-btn">Register</button>
         </form>
+        )}
 
         <button onClick={closeModal} className="close-modal">X</button>
       </div>
