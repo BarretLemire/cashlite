@@ -7,4 +7,5 @@ alembic
 passlib[bcrypt]
 python-jose[cryptography]
 python-dotenv
+python-decouple
 python-multipart
