@@ -2,7 +2,7 @@ from sqlalchemy import Column, Integer, String, Float, ForeignKey, Date, Enum, B
 from sqlalchemy.orm import relationship
 from .database import Base
 import enum
-
+from sqlmodel import SQLModel
 
 class UpcomingExpense(Base):
     __tablename__ = 'upcoming_expenses'

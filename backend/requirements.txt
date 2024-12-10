@@ -1,6 +1,7 @@
 uvicorn
 fastapi
 sqlalchemy
+sqlmodel
 psycopg2
 pydantic
 alembic
