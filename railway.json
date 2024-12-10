@@ -1,0 +1,23 @@
+{
+  "services": {
+    "backend": {
+      "build": {
+        "builder": "NIXPACKS",
+        "dir": "backend"
+      },
+      "start": {
+        "command": "uvicorn app.main:app --host 0.0.0.0 --port $PORT"
+      }
+    },
+    "frontend": {
+      "build": {
+        "builder": "NIXPACKS",
+        "dir": "frontend"
+      },
+      "start": {
+        "command": "npm run dev -- --port $PORT "
+      }
+    }
+  }
+}
+

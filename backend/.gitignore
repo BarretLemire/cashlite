@@ -48,3 +48,5 @@ htmlcov/
 # pyre
 .pyre/
 backend/.env
+
+./backend/auth.py
