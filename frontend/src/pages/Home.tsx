@@ -4,16 +4,31 @@ import './Home.css';
 
 import penIcon from '../assets/pen.svg';
 import deleteIcon from '../assets/delete.svg';
-import saveIcon from '../assets/save.svg';
 import addIcon from '../assets/add.svg';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:8000';
 
+interface IncomeItem {
+  id: number; 
+  amount: number;
+  category: string;
+}
+
+interface ExpenseItem {
+  id: number;
+  amount: number;
+  category: string;
+}
+
 const HomePage: React.FC<{ isLoggedIn: boolean }> = ({ isLoggedIn }) => {
-  const { darkMode, toggleDarkMode } = useContext(DarkModeContext);
+  const darkModeContext = useContext(DarkModeContext);
+if (!darkModeContext) {
+  throw new Error('DarkModeContext must be used within a DarkModeProvider');
+}
+  const { darkMode, toggleDarkMode } = darkModeContext;
   const [isEditMode, setEditMode] = useState(false);
-  const [incomeItems, setIncomeItems] = useState([]);
-  const [expenseItems, setExpenseItems] = useState([]);
+  const [incomeItems, setIncomeItems] = useState<IncomeItem[]>([]);
+  const [expenseItems, setExpenseItems] = useState<ExpenseItem[]>([]);
   const [newIncomeVisible, setNewIncomeVisible] = useState(false);
   const [newExpenseVisible, setNewExpenseVisible] = useState(false);
   const [newIncome, setNewIncome] = useState({ amount: '', category: '' });
@@ -117,7 +132,7 @@ const HomePage: React.FC<{ isLoggedIn: boolean }> = ({ isLoggedIn }) => {
       });
 
       if (response.ok) {
-        const createdIncome = await response.json();
+        const createdIncome: IncomeItem = await response.json();
         setIncomeItems((prevItems) => [...prevItems, createdIncome]);
         setNewIncome({ amount: '', category: '' });
         setNewIncomeVisible(false);

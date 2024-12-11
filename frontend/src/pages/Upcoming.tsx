@@ -9,11 +9,25 @@ import addIcon from '../assets/add.svg';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:8000';
 
-const UpcomingPage = () => {
-  const { darkMode, toggleDarkMode } = useContext(DarkModeContext);
+interface UpcomingExpense {
+  id: number;
+  amount: number;
+  category: string;
+  date: string;
+  description: string;
+}
+
+
+
+const UpcomingPage: React.FC = () => {
+  const darkModeContext = useContext(DarkModeContext);
+if (!darkModeContext) {
+  throw new Error('DarkModeContext must be used within a DarkModeProvider');
+}
+  const { darkMode, toggleDarkMode } = darkModeContext;
   const [isEditMode, setEditMode] = useState(false);
   const [remainingTotal, setRemainingTotal] = useState(0); // Initialize dynamically
-  const [upcomingExpenses, setUpcomingExpenses] = useState([]);
+  const [upcomingExpenses, setUpcomingExpenses] = useState<UpcomingExpense[]>([]);
   const [newExpenseVisible, setNewExpenseVisible] = useState(false);
   const [newExpense, setNewExpense] = useState({
     amount: '',
@@ -65,8 +79,8 @@ const UpcomingPage = () => {
           const incomes = await incomeResponse.json();
           const expenses = await expenseResponse.json();
 
-          const totalIncome = incomes.reduce((sum, income) => sum + income.amount, 0);
-          const totalExpenses = expenses.reduce((sum, expense) => sum + expense.amount, 0);
+          const totalIncome = incomes.reduce((sum: any, income: { amount: any; }) => sum + income.amount, 0);
+          const totalExpenses = expenses.reduce((sum: any, expense: { amount: any; }) => sum + expense.amount, 0);
 
           const calculatedTotal = totalIncome - totalExpenses;
 
@@ -109,18 +123,18 @@ const UpcomingPage = () => {
     setEditMode(!isEditMode);
   };
 
-  const handleAssignDate = (expense) => {
+  const handleAssignDate = (expense: UpcomingExpense) => {
     localStorage.setItem('selectedExpense', JSON.stringify(expense));
     navigate('/calendar');
   };
 
-  const handleAllocate = (expense) => {
+  const handleAllocate = (expense: UpcomingExpense) => {
     const updatedTotal = remainingTotal - expense.amount;
     setRemainingTotal(updatedTotal);
     localStorage.setItem('remainingTotal', updatedTotal.toString());
   };
 
-  const handleDeleteExpense = async (id) => {
+  const handleDeleteExpense = async (id: any) => {
     const token = localStorage.getItem('authToken');
     if (!token) return;
 

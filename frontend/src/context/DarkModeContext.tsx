@@ -1,13 +1,17 @@
-import React, { createContext, useState, useEffect } from 'react';
+import React, { createContext, useState, useEffect, ReactNode } from 'react';
 
 interface DarkModeContextProps {
   darkMode: boolean;
   toggleDarkMode: () => void;
 }
 
+interface DarkModeProviderProps {
+  children: ReactNode; // Explicitly define the children prop type
+}
+
 export const DarkModeContext = createContext<DarkModeContextProps | undefined>(undefined);
 
-export const DarkModeProvider: React.FC = ({ children }) => {
+export const DarkModeProvider: React.FC<DarkModeProviderProps> = ({ children }) => {
   const [darkMode, setDarkMode] = useState(false);
 
   // Load dark mode preference from localStorage on component mount

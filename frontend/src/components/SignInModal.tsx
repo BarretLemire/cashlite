@@ -8,7 +8,11 @@ const SignInModal: React.FC<{ closeModal: () => void; onLoginSuccess: () => void
   closeModal,
   onLoginSuccess,
 }) => {
-  const { darkMode } = useContext(DarkModeContext);
+  const darkModeContext = useContext(DarkModeContext);
+  if (!darkModeContext) {
+    throw new Error('DarkModeContext must be used within a DarkModeProvider');
+  }
+  const { darkMode } = darkModeContext;
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");

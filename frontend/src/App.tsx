@@ -8,7 +8,7 @@ import SignInModal from "./components/SignInModal";
 import RegisterModal from "./components/RegisterModal";
 import { DarkModeProvider } from "./context/DarkModeContext";
 
-const App = () => {
+const App: React.FC = () => {
   const [isSignInOpen, setIsSignInOpen] = useState(false); // State for SignIn modal
   const [isRegisterOpen, setIsRegisterOpen] = useState(false); // State for Register modal
   const [isLoggedIn, setIsLoggedIn] = useState(

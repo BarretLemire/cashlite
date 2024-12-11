@@ -14,7 +14,11 @@ const Header: React.FC<{
   openRegister: () => void; 
 }> = ({ isLoggedIn, handleLogout, openSignIn, openRegister }) => {
   const location = useLocation();
-  const { darkMode } = useContext(DarkModeContext);
+  const darkModeContext = useContext(DarkModeContext);
+  if (!darkModeContext) {
+    throw new Error('DarkModeContext must be used within a DarkModeProvider');
+  }
+  const { darkMode } = darkModeContext;
   const [username, setUsername] = useState<string | null>(null);
 
   // Fetch user profile data when isLoggedIn changes
