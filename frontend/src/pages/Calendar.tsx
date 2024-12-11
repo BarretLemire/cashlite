@@ -8,7 +8,11 @@ import deleteIcon from "../assets/delete.svg";
 import "./Calendar.css";
 
 const CalendarPage: React.FC = () => {
-  const { darkMode } = useContext(DarkModeContext); // Get dark mode state
+  const darkModeContext = useContext(DarkModeContext);
+  if (!darkModeContext) {
+    throw new Error('DarkModeContext must be used within a DarkModeProvider');
+  }
+  const { darkMode } = darkModeContext; // Get dark mode state
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [events, setEvents] = useState<{ [key: string]: string[] }>({
     "2024-10-10": ["Phone Bill"],
